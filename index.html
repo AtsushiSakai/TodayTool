@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1 minimal-ui">
+<meta name="description" content="Today Tool">
+<meta name="author" content="Atsushi Sakai">
+<meta name="keywords" content="Atsushi Sakai,MyEnigma,Today,Time" >
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="white">
+<link href="static/css/bootstrap.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="https://dl.dropboxusercontent.com/u/2393628/heroku/Today-tool/favicon.ico" type="image/x-icon" />
+<link rel="apple-touch-icon" href="https://dl.dropboxusercontent.com/u/2393628/heroku/Today-tool/apple-touch-icon-152x152.png"/>
+
+<!--
+-->
+
+
+
+<script type="text/javascript">
+
+function getRemainTimeToday(){
+  var dateobj=new Date();
+  var hour   = dateobj.getHours();
+  var minute = dateobj.getMinutes();
+  var second = dateobj.getSeconds();
+  var remaintime="<h2>今日は残り"+(23-hour)+"時間"+(60-minute)+"分"+(60-second)+"秒しか残っていません</h2>";
+  document.getElementById('remaintime').innerHTML=remaintime;
+}
+
+
+function getRemainTimeLife(){
+  var bday=document.getElementById('birthday').value;
+  var today=new Date();
+  var birth=new Date(bday);
+  var diff=today.getTime()-birth.getTime();
+  var pastday=Math.floor(diff/(1000*60*60*24))
+  var lifeday=Math.floor(83*365.25)
+  var remainday=lifeday-pastday
+  localStorage["birthday"]=bday;
+
+  if(remainday>0){
+    document.getElementById('birthdayplate').innerHTML="<h2>あなたに残された時間は"+remainday+"日です.</h2>";
+  }
+  else{
+    document.getElementById('birthdayplate').innerHTML="誕生日の入力が間違えているか、あなたは十分長生きしています(^^)";
+  }
+}
+
+function startfunc()
+{
+  if(localStorage["birthday"]!=undefined){
+    document.getElementById('birthday').value=localStorage["birthday"];
+    getRemainTimeLife();
+  }
+
+  setInterval("getRemainTimeToday()",1000);
+}
+
+</script>
+
+<title>Today Tool</title>
+<link href="static/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body onLoad="startfunc()">
+<div class="navbar navbar-inverse navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://myenigma.hatenablog.com/">
+        <img style="vertical-align:middle;" height="28" src="https://dl.dropboxusercontent.com/u/2393628/heroku/common/myenigmaLogo.png"/></a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-left">
+        <li class="hidden">
+        <a href="#page-top"></a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="http://myenigma.hatenablog.com/entry/2015/06/28/203458">本サービスの詳しい使い方</a></li>
+        <li><a href="http://atsushisakai.github.io/">その他Webツール</a></li>
+
+
+      </ul>
+    </div><!--/.navbar-collapse -->
+  </div>
+</div>
+
+<div class="container" style="padding:10px 0">
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Today Tool</h1>
+    </div>
+
+
+<div class="row">
+<div class="col-md-4">
+<div class="panel panel-primary"><div class="panel-heading"><h3 class="panel-title">
+Wareki Check
+</h3></div><div class="panel-body">
+<p>
+% from time import gmtime, strftime
+% d=strftime("%Y", gmtime())
+% wareki=int(d)-1988
+% etoList=[u"申(さる)", u"酉(とり)", u"戌(いぬ)", u"亥(いのしし)", u"子(ねずみ)", u"牛(うし)", u"寅(とら)", u"卯(うさぎ)", u"辰(たつ)", u"巳(へび)", u"午(うま)", u"未(ひつじ)"]
+% eto=etoList[int(d)%12]
+<h2>今年は平成{{wareki}}年です。<br>
+  干支は{{eto}}年です。<br>
+(西暦だと{{d}}年です)</h2>
+</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">
+Remaining time of today
+</h3></div>
+<div class="panel-body" id="remaintime"></div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title">
+Remaining days of this year
+</h3></div><div class="panel-body">
+<p>
+% import datetime
+% today = datetime.date.today()
+% newyearsday = datetime.date(int(d), 1, 1)
+% dday=today-newyearsday
+% remainratio=round((float(dday.days))/365.0*100.0,2)
+% remaindays=str(remainratio)
+<h2>今日で今年の約{{remainratio}}%が過ぎました。</h2>
+</p>
+</div>
+</div>
+</div>
+
+
+
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+  <div class="panel panel-danger"><div class="panel-heading"><h3 class="panel-title">
+    Remaing Days of your life
+  </h3></div>
+  <div class="panel-body">
+  <div id="birthdayplate">
+    誕生日を入力して下さい
+  </div>
+
+  <div class="form-inline">
+  <div class="form-group">
+    <input type="text" id="birthday" class="form-control" placeholder="ex)1900-01-01">
+    <input type="submit" value="Submit" class="btn btn-primary" onClick="getRemainTimeLife()">
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+
+  <div class="col-md-4">
+  <div class="panel panel-info"><div class="panel-heading"><h3 class="panel-title">
+        Today's wikipedia article
+  </h3></div>
+  <div class="panel-body">
+  <div class="form-group">
+    <label class="control-label" for="imageurl">下記のボタンをクリックして、今日の小ネタを確認しましょう.</label>
+    <!--<input type="submit" value="Check" class="btn btn-primary" onClick="window.open('http://ja.wikipedia.org/wiki/Special:Randompage')">-->
+    <form action="http://ja.wikipedia.org/wiki/Special:Randompage">
+    <input type="submit" value="Check" class="btn btn-primary">
+    </form>
+  </div>
+  </div>
+  </div>
+  </div>
+
+  <div class="col-md-4">
+  <div class="panel panel-warning"><div class="panel-heading"><h3 class="panel-title">
+        Today's activity recommendation
+  </h3></div>
+  <div class="panel-body">
+    もし今日時間があれば、下記を実施してみたらどうですか？
+% import random
+% todoList=[
+%u"筋トレをする",
+%u"水泳をする",
+%u"小説を読む",
+%u"親にメールを送る",
+%u"散歩する",
+%u"一万歩散歩する",
+%u"トイレを掃除する",
+%u"次の連休の旅行を企画する",
+%u"映画を映画館に見に行く",
+%u"DVDを借りる",
+%u"英語を勉強する",
+%u"隣の駅を探索してみる",
+%u"ぼーっとテレビを見る",
+%u"次回の美容室を予約する",
+%u"新しい音楽をYoutubeで聞く",
+%u"ジョギングをする"
+%]
+% random.shuffle(todoList)
+% todo=todoList[0]
+<h2>{{todo}}</h2>
+
+
+  </div>
+  </div>
+  </div>
+
+
+
+
+
+
+</div>
+
+
+  <!--TweetButton-->
+  <a href="https://twitter.com/share" class="twitter-share-button" data-size="large">Tweet</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+  <!-- hatena button -->
+<a href="http://b.hatena.ne.jp/entry/https://today-tool.herokuapp.com/" class="hatena-bookmark-button" data-hatena-bookmark-title="Today Tool" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+
+
+  <!--署名-->
+  <footer>
+    <address>
+      For more details and requests, contact
+      <a href="https://twitter.com/atsushi_twi">@Atsushi_twi</a>.
+    </address>
+    <p><small>(c) copyright 2015.</small></p>
+  </footer>
+  </html>
+
+  </div>
+
+  <!-- Google Adscense -->
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-9612347954373886"
+    data-ad-slot="3722314056"
+    data-ad-format="auto"></ins>
+  <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+
+  </script>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-64825145-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+</body>
