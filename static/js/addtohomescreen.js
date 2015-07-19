@@ -79,7 +79,7 @@ ath.intl = {
 	},
 
 	ja_jp: {
-		ios: 'このWebアプリを、より一層便利に使うために%iconを押して<strong>ホーム画面に追加</strong>しましょう',
+		ios: 'このWebアプリをより一層便利に使うために、%iconを押して<strong>ホーム画面に追加</strong>ボタンを押して下さい',
 		android: 'このWebアプリをより一層便利に使うために、ブラウザのオプションメニューから<strong>ホーム画面に追加</strong>を押して下さい.<small>オプションメニュ-はハードウェアボタンや右上のメニューアイコン<span class="ath-action-icon">icon</span>を押すと表示されます.</small>',
  	},
 
